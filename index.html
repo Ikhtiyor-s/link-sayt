@@ -1,123 +1,107 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <title>Koinot fonli sahifa</title>
-  <style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mening Linklarim</title>
+<style>
     body {
-      margin: 0;
-      padding: 0;
-      height: 100vh;
-      overflow: hidden;
-      background: #000; /* qora fon */
-      border: 15px solid #111; /* qalin qora ramka */
-      box-sizing: border-box;
-      color: #fff;
-      font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        color: white;
+        text-align: center;
+        background: #000; /* qora kosmos */
+        overflow: hidden;
+        border: 12px solid #000; /* qora qalin ramka */
     }
 
-    /* Canvas butun ekran */
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
+    /* Yer sharini fon sifatida qo'yamiz */
+    body::before {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 500px;
+        height: 500px;
+        background: url('https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg') no-repeat;
+        background-size: cover;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        animation: rotate 40s linear infinite; /* aylanish */
+        z-index: -1;
+        box-shadow: 0 0 40px rgba(0, 200, 255, 0.7);
     }
 
-    /* Kontent markazda */
-    .content {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      top: 40%;
-      transform: translateY(-40%);
+    @keyframes rotate {
+        from { transform: translate(-50%, -50%) rotate(0deg); }
+        to { transform: translate(-50%, -50%) rotate(360deg); }
+    }
+
+    .container {
+        max-width: 500px;
+        position: relative;
+        z-index: 1;
+    }
+
+    img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 50%;
+        margin-top: 20px;
+        border: 3px solid #ddd;
     }
 
     h1 {
-      font-size: 3em;
-      color: #b084f7; /* binafsha */
+        margin: 15px 0 5px 0;
+        font-size: 24px;
     }
 
     p {
-      font-size: 1.3em;
-      color: #ddd;
+        color: #ccc;
+        font-size: 15px;
+        margin: 5px 0;
     }
 
-    a {
-      color: #00aaff; /* ko‘k rang linklar */
-      text-decoration: none;
-      font-weight: bold;
+    .link {
+        display: block;
+        margin: 12px auto;
+        padding: 14px;
+        background: linear-gradient(135deg, #00aaff, #8a2be2);
+        width: 90%;
+        border-radius: 12px;
+        text-decoration: none;
+        color: #ffffff;
+        font-weight: bold;
+        box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
+        transition: background 0.4s, transform 0.2s;
     }
 
-    a:hover {
-      color: #ffcc00; /* hoverda oltin sariq */
+    .link:hover {
+        background: linear-gradient(135deg, #ff7eb3, #ff758c);
+        transform: scale(1.07);
     }
-  </style>
+</style>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
-  <div class="content">
-    <h1>Koinotga Xush Kelibsiz</h1>
-    <p>Saytimizdagi <a href="#">asosiy bo‘lim</a> yoki <a href="#">aloqa sahifasi</a>ga o‘ting.</p>
-  </div>
+<div class="container">
+    <img src="profil.jpg" alt="Profil rasmi">
+    <h1>Suyunov Ixtiyor</h1>
+    <p><strong>Proyekt menejer</strong></p>
+    <p>IT loyihalarni boshqarish</p>
 
-  <script>
-    const canvas = document.getElementById("canvas");
-    const ctx = canvas.getContext("2d");
-
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let particles = [];
-
-    class Particle {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = (Math.random() - 0.5) * 2;
-        this.color = Math.random() > 0.5 ? "#8a2be2" : "#00aaff"; // binafsha va ko‘k
-      }
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-
-        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-      }
-      draw() {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = this.color;
-        ctx.fill();
-      }
-    }
-
-    function init() {
-      particles = [];
-      for (let i = 0; i < 150; i++) {
-        particles.push(new Particle());
-      }
-    }
-
-    function animate() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        p.update();
-        p.draw();
-      });
-      requestAnimationFrame(animate);
-    }
-
-    init();
-    animate();
-
-    window.addEventListener("resize", () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      init();
-    });
-  </script>
+    <a class="link" href="tel:+998948679300">📞 Murojaat uchun telefon</a>
+    <a class="link" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
+    <a class="link" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
+    <a class="link" href="https://welltech.uz/" target="_blank">🌐 Bizning sayt</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
+</div>
 </body>
 </html>
