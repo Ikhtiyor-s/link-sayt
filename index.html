@@ -1,169 +1,123 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Mening Linklarim</title>
-<style>
-    /* Orqa fon (koinot sharikchalari) */
+  <meta charset="UTF-8">
+  <title>Koinot fonli sahifa</title>
+  <style>
     body {
-        margin: 0;
-        padding: 0;
-        overflow: hidden;
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #000;
-        color: white;
+      margin: 0;
+      padding: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: #000; /* qora fon */
+      border: 15px solid #111; /* qalin qora ramka */
+      box-sizing: border-box;
+      color: #fff;
+      font-family: Arial, sans-serif;
     }
 
+    /* Canvas butun ekran */
     canvas {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: -1;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
     }
 
-    /* Butun sahifa atrofiga qalin qora ramka */
-    body::before {
-        content: "";
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        border: 20px solid black; /* qalinligini o‘zgartirish mumkin */
-        pointer-events: none;
-        z-index: 9999;
-    }
-
-    .container {
-        max-width: 500px;
-        margin: auto;
-        padding: 20px;
-        position: relative;
-        z-index: 1;
-    }
-
-    img {
-        width: 150px;
-        height: 150px;
-        object-fit: cover;
-        border-radius: 50%;
-        margin-top: 20px;
-        border: 3px solid #ddd;
+    /* Kontent markazda */
+    .content {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      top: 40%;
+      transform: translateY(-40%);
     }
 
     h1 {
-        margin: 15px 0 5px 0;
-        font-size: 24px;
-        color: white;
+      font-size: 3em;
+      color: #b084f7; /* binafsha */
     }
 
     p {
-        color: #ddd;
-        font-size: 15px;
-        margin: 5px 0;
+      font-size: 1.3em;
+      color: #ddd;
     }
 
-    .link {
-        display: block;
-        margin: 12px auto;
-        padding: 14px;
-        background: #fff;
-        width: 90%;
-        border-radius: 10px;
-        text-decoration: none;
-        color: #000;
-        font-weight: bold;
-        box-shadow: 0px 2px 5px rgba(0,0,0,0.4);
-        transition: background 0.2s, transform 0.2s;
+    a {
+      color: #00aaff; /* ko‘k rang linklar */
+      text-decoration: none;
+      font-weight: bold;
     }
-    .link:hover {
-        background: #e0e0e0;
-        transform: scale(1.02);
+
+    a:hover {
+      color: #ffcc00; /* hoverda oltin sariq */
     }
-</style>
+  </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
+  <canvas id="canvas"></canvas>
+  <div class="content">
+    <h1>Koinotga Xush Kelibsiz</h1>
+    <p>Saytimizdagi <a href="#">asosiy bo‘lim</a> yoki <a href="#">aloqa sahifasi</a>ga o‘ting.</p>
+  </div>
 
-<div class="container">
-    <!-- Profil rasmi -->
-    <img src="profil.jpg" alt="Profil rasmi">
-
-    <!-- Ism Familiya -->
-    <h1>Suyunov Ixtiyor</h1>
-
-    <!-- Faoliyat turi -->
-    <p><strong>Proyekt menejer</strong></p>
-
-    <!-- Qisqacha izoh -->
-    <p>IT loyihalarni boshqarish</p>
-
-    <!-- Telefon raqam -->
-    <p>📞 Murojaat uchun: <a href="tel:+998901234567" style="color: #4CAF50; text-decoration:none;">+998 90 123 45 67</a></p>
-
-    <!-- Linklar -->
-    <a class="link" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
-    <a class="link" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
-    <a class="link" href="https://welltech.uz/" target="_blank">🌐 Bizning sayt</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
-</div>
-
-<!-- Orqa fon uchun JS (harakatlanadigan koinot sharikchalari) -->
-<script>
-    const canvas = document.getElementById("stars");
+  <script>
+    const canvas = document.getElementById("canvas");
     const ctx = canvas.getContext("2d");
+
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    let stars = [];
-    let numStars = 120;
+    let particles = [];
 
-    for (let i = 0; i < numStars; i++) {
-        stars.push({
-            x: Math.random() * canvas.width,
-            y: Math.random() * canvas.height,
-            radius: Math.random() * 2,
-            dx: (Math.random() - 0.5) * 0.5,
-            dy: (Math.random() - 0.5) * 0.5
-        });
+    class Particle {
+      constructor() {
+        this.x = Math.random() * canvas.width;
+        this.y = Math.random() * canvas.height;
+        this.size = Math.random() * 3 + 1;
+        this.speedX = (Math.random() - 0.5) * 2;
+        this.speedY = (Math.random() - 0.5) * 2;
+        this.color = Math.random() > 0.5 ? "#8a2be2" : "#00aaff"; // binafsha va ko‘k
+      }
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+
+        if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+        if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+      }
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = this.color;
+        ctx.fill();
+      }
     }
 
-    function drawStars() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.fillStyle = "white";
-        stars.forEach(star => {
-            ctx.beginPath();
-            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-            ctx.fill();
-        });
-    }
-
-    function updateStars() {
-        stars.forEach(star => {
-            star.x += star.dx;
-            star.y += star.dy;
-            if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
-            if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
-        });
+    function init() {
+      particles = [];
+      for (let i = 0; i < 150; i++) {
+        particles.push(new Particle());
+      }
     }
 
     function animate() {
-        drawStars();
-        updateStars();
-        requestAnimationFrame(animate);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      particles.forEach(p => {
+        p.update();
+        p.draw();
+      });
+      requestAnimationFrame(animate);
     }
+
+    init();
     animate();
 
     window.addEventListener("resize", () => {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      init();
     });
-</script>
+  </script>
 </body>
 </html>
