@@ -8,100 +8,162 @@
     body {
         margin: 0;
         padding: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
         font-family: Arial, sans-serif;
-        color: white;
+        color: #fff;
         text-align: center;
-        background: #000; /* qora kosmos */
         overflow: hidden;
-        border: 12px solid #000; /* qora qalin ramka */
+        border: 10px solid #000; /* Qora ramka */
     }
-
-    /* Yer sharini fon sifatida qo'yamiz */
-    body::before {
-        content: "";
-        position: absolute;
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -2; /* Orqa fon */
+    }
+    .earth {
+        position: fixed;
         top: 50%;
         left: 50%;
-        width: 500px;
-        height: 500px;
-        background: url('https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg') no-repeat;
-        background-size: cover;
+        width: 200px;
+        height: 200px;
+        background: url("https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg") no-repeat center/cover;
         border-radius: 50%;
+        animation: spin 20s linear infinite;
+        z-index: -1; /* Fon ichida bo‘ladi */
         transform: translate(-50%, -50%);
-        animation: rotate 40s linear infinite; /* aylanish */
-        z-index: -1;
-        box-shadow: 0 0 40px rgba(0, 200, 255, 0.7);
+        opacity: 0.3; /* biroz shaffof */
     }
-
-    @keyframes rotate {
+    @keyframes spin {
         from { transform: translate(-50%, -50%) rotate(0deg); }
         to { transform: translate(-50%, -50%) rotate(360deg); }
     }
-
     .container {
-        max-width: 500px;
         position: relative;
+        max-width: 500px;
+        margin: auto;
+        padding: 20px;
         z-index: 1;
     }
-
     img {
         width: 150px;
         height: 150px;
         object-fit: cover;
         border-radius: 50%;
         margin-top: 20px;
-        border: 3px solid #ddd;
+        border: 3px solid #fff;
     }
-
     h1 {
         margin: 15px 0 5px 0;
-        font-size: 24px;
+        font-size: 26px;
+        color: #00e5ff;
     }
-
     p {
-        color: #ccc;
+        color: #ddd;
         font-size: 15px;
         margin: 5px 0;
     }
-
     .link {
         display: block;
         margin: 12px auto;
         padding: 14px;
-        background: linear-gradient(135deg, #00aaff, #8a2be2);
+        background: #222;
         width: 90%;
-        border-radius: 12px;
+        border-radius: 10px;
         text-decoration: none;
-        color: #ffffff;
+        color: #fff;
         font-weight: bold;
-        box-shadow: 0px 4px 12px rgba(0,0,0,0.4);
-        transition: background 0.4s, transform 0.2s;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.5);
+        transition: background 0.3s, transform 0.2s;
     }
-
     .link:hover {
-        background: linear-gradient(135deg, #ff7eb3, #ff758c);
-        transform: scale(1.07);
+        background: #00e5ff;
+        color: #000;
+        transform: scale(1.05);
+    }
+    .phone {
+        margin: 15px 0;
+        font-size: 16px;
+        font-weight: bold;
+        color: #ffcc00;
     }
 </style>
 </head>
 <body>
-<div class="container">
-    <img src="profil.jpg" alt="Profil rasmi">
-    <h1>Suyunov Ixtiyor</h1>
-    <p><strong>Proyekt menejer</strong></p>
-    <p>IT loyihalarni boshqarish</p>
+    <!-- Orqa fon yulduzlar -->
+    <canvas id="stars"></canvas>
+    <!-- Yer shari -->
+    <div class="earth"></div>
 
-    <a class="link" href="tel:+998948679300">📞 Murojaat uchun telefon</a>
-    <a class="link" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
-    <a class="link" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
-    <a class="link" href="https://welltech.uz/" target="_blank">🌐 Bizning sayt</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
-    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
-</div>
+    <div class="container">
+        <!-- Profil rasmi -->
+        <img src="profil.jpg" alt="Profil rasmi">
+        
+        <!-- Ism Familiya -->
+        <h1>Suyunov Ixtiyor</h1>
+        
+        <!-- Faoliyat turi -->
+        <p><strong>Proyekt menejer</strong></p>
+        
+        <!-- Qisqacha izoh -->
+        <p>IT loyihalarni boshqarish</p>
+        
+        <!-- Telefon raqam -->
+        <p class="phone">📞 +998 90 123 45 67</p>
+        
+        <!-- Linklar -->
+        <a class="link" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
+        <a class="link" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
+        <a class="link" href="https://welltech.uz/" target="_blank">🌐 Bizning sayt</a>
+        <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
+        <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
+        <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
+    </div>
+
+<script>
+    // Yulduzlar animatsiyasi
+    const canvas = document.getElementById('stars');
+    const ctx = canvas.getContext('2d');
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+    for (let i = 0; i < 200; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "#fff";
+        stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    function updateStars() {
+        stars.forEach(star => {
+            star.x += star.dx;
+            star.y += star.dy;
+            if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
+            if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
+        });
+    }
+
+    function animate() {
+        drawStars();
+        updateStars();
+        requestAnimationFrame(animate);
+    }
+    animate();
+</script>
 </body>
 </html>
