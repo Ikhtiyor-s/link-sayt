@@ -3,81 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Suyunov Ixtiyor | Linklar</title>
+<title>Mening Linklarim</title>
 <style>
+    /* Orqa fon (koinot sharikchalari) */
     body {
-        font-family: Arial, sans-serif;
-        text-align: center;
-        background: #fafafa;
         margin: 0;
         padding: 0;
+        overflow: hidden;
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: #000;
+        color: white;
     }
+
+    canvas {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+    }
+
+    /* Butun sahifa atrofiga qalin qora ramka */
+    body::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border: 20px solid black; /* qalinligini o‘zgartirish mumkin */
+        pointer-events: none;
+        z-index: 9999;
+    }
+
     .container {
         max-width: 500px;
         margin: auto;
         padding: 20px;
+        position: relative;
+        z-index: 1;
     }
+
     img {
-        width: 130px;
-        height: 130px;
+        width: 150px;
+        height: 150px;
         object-fit: cover;
         border-radius: 50%;
         margin-top: 20px;
         border: 3px solid #ddd;
-        box-shadow: 0 4px 10px rgba(0,0,0,0.15);
     }
+
     h1 {
         margin: 15px 0 5px 0;
-        font-size: 22px;
+        font-size: 24px;
+        color: white;
     }
+
     p {
-        color: #777;
-        font-size: 14px;
-        margin: 5px 0 15px 0;
+        color: #ddd;
+        font-size: 15px;
+        margin: 5px 0;
     }
+
     .link {
         display: block;
         margin: 12px auto;
         padding: 14px;
+        background: #fff;
         width: 90%;
         border-radius: 10px;
         text-decoration: none;
+        color: #000;
         font-weight: bold;
-        box-shadow: 0px 2px 6px rgba(0,0,0,0.1);
-        transition: transform 0.2s, opacity 0.2s;
+        box-shadow: 0px 2px 5px rgba(0,0,0,0.4);
+        transition: background 0.2s, transform 0.2s;
     }
     .link:hover {
+        background: #e0e0e0;
         transform: scale(1.02);
-        opacity: 0.9;
     }
-    .phone { background: #34c759; color: #fff; }
-    .telegram { background: #229ED9; color: #fff; }
-    .instagram { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: #fff; }
-    .app { background: #fff; color: #000; }
 </style>
 </head>
 <body>
+<canvas id="stars"></canvas>
+
 <div class="container">
     <!-- Profil rasmi -->
-    <img src="profil2.jpg" alt="Profil rasmi">
-    
+    <img src="profil.jpg" alt="Profil rasmi">
+
     <!-- Ism Familiya -->
     <h1>Suyunov Ixtiyor</h1>
-    
+
     <!-- Faoliyat turi -->
-    <p></p>
-   
+    <p><strong>Proyekt menejer</strong></p>
+
+    <!-- Qisqacha izoh -->
+    <p>IT loyihalarni boshqarish</p>
+
+    <!-- Telefon raqam -->
+    <p>📞 Murojaat uchun: <a href="tel:+998901234567" style="color: #4CAF50; text-decoration:none;">+998 90 123 45 67</a></p>
+
     <!-- Linklar -->
-    <a class="link phone" href="tel:+998948679300">📲 Murojaat uchun telefon</a>
-    <a class="link telegram" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
-    <a class="link instagram" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
-    <a class="link telegram" href="https://t.me/JalyuziToshkentlik" target="_blank">🪟 Jalyuzi buyurtma qilish</a>
-    <a class="link app" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
-    <a class="link app" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
-    <a class="link app" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
+    <a class="link" href="https://t.me/ixtiyor9300" target="_blank">📲 Telegram</a>
+    <a class="link" href="https://instagram.com/ikhtiyor.sb" target="_blank">📷 Instagram</a>
+    <a class="link" href="https://welltech.uz/" target="_blank">🌐 Bizning sayt</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonbor.nonboruz" target="_blank">📱 NonBor barcha milliy taomlar</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.nonborbusiness" target="_blank">📱 NonBor biznes uchun</a>
+    <a class="link" href="https://play.google.com/store/apps/details?id=uz.welltech.fitme" target="_blank">📱 FitMe o‘zingizga mosini tanlang</a>
 </div>
+
+<!-- Orqa fon uchun JS (harakatlanadigan koinot sharikchalari) -->
+<script>
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = [];
+    let numStars = 120;
+
+    for (let i = 0; i < numStars; i++) {
+        stars.push({
+            x: Math.random() * canvas.width,
+            y: Math.random() * canvas.height,
+            radius: Math.random() * 2,
+            dx: (Math.random() - 0.5) * 0.5,
+            dy: (Math.random() - 0.5) * 0.5
+        });
+    }
+
+    function drawStars() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.fillStyle = "white";
+        stars.forEach(star => {
+            ctx.beginPath();
+            ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
+            ctx.fill();
+        });
+    }
+
+    function updateStars() {
+        stars.forEach(star => {
+            star.x += star.dx;
+            star.y += star.dy;
+            if (star.x < 0 || star.x > canvas.width) star.dx *= -1;
+            if (star.y < 0 || star.y > canvas.height) star.dy *= -1;
+        });
+    }
+
+    function animate() {
+        drawStars();
+        updateStars();
+        requestAnimationFrame(animate);
+    }
+    animate();
+
+    window.addEventListener("resize", () => {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    });
+</script>
 </body>
 </html>
-
-
-
